@@ -102,14 +102,24 @@ class ExcelMerger(QWidget):
                     new_cell.border = copy.copy(cell.border)
                     new_cell.fill = copy.copy(cell.fill)
                     new_cell.alignment = copy.copy(cell.alignment)
+                    print(new_cell)
+                    if new_cell.column_letter == 'CD':
+                        # 复制图片
+                        for image in ws._images:
+                            img = Image(image.ref)
+                            img.anchor = get_column_letter(col_num) + str(current_row)
+                            img.width = 70
+                            img.height = 23
+                            # img.anchor = image.anchor
+                            merged_ws.add_image(img)
 
                 current_row += 1
 
-            # 复制图片
-            for image in ws._images:
-                img = Image(image.ref)
-                img.anchor = image.anchor
-                merged_ws.add_image(img)
+            # # 复制图片
+            # for image in ws._images:
+            #     img = Image(image.ref)
+            #     img.anchor = image.anchor
+            #     merged_ws.add_image(img)
 
         # 保存合并后的文件
         output_file, _ = QFileDialog.getSaveFileName(self, "保存合并后的文件", "",
