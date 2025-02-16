@@ -87,9 +87,9 @@ class ExcelMerger(QWidget):
             merged_ws.row_dimensions[row_num].height = first_ws.row_dimensions[row_num].height
 
         current_row = 2
-
         # 遍历所有文件并合并数据
         for file in self.selected_files:
+            count = 0
             wb = load_workbook(file)
             ws = wb.active
 
@@ -102,24 +102,18 @@ class ExcelMerger(QWidget):
                     new_cell.border = copy.copy(cell.border)
                     new_cell.fill = copy.copy(cell.fill)
                     new_cell.alignment = copy.copy(cell.alignment)
-                    print(new_cell)
-                    if new_cell.column_letter == 'CD':
-                        # 复制图片
-                        for image in ws._images:
-                            img = Image(image.ref)
-                            img.anchor = get_column_letter(col_num) + str(current_row)
-                            img.width = 70
-                            img.height = 23
-                            # img.anchor = image.anchor
-                            merged_ws.add_image(img)
-
+                    # if new_cell.column_letter == 'CD':
+                    #     img = ws._images[count].ref
+                    #     # 复制图片
+                    #     # for image in ws._images:
+                    #     #     img = Image(image.ref)
+                    #     img.anchor = get_column_letter(col_num) + str(current_row)
+                    #     img.width = 70
+                    #     img.height = 23
+                    #     # img.anchor = image.anchor
+                    #     merged_ws.add_image(img)
+                    #     count+=1
                 current_row += 1
-
-            # # 复制图片
-            # for image in ws._images:
-            #     img = Image(image.ref)
-            #     img.anchor = image.anchor
-            #     merged_ws.add_image(img)
 
         # 保存合并后的文件
         output_file, _ = QFileDialog.getSaveFileName(self, "保存合并后的文件", "",
